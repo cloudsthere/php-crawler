@@ -14,8 +14,8 @@
     },
     "autoload":{
         "psr-4":{
-            "phpcrawler\\":"phpcrawler/src/"
+            "phpcrawler\\":"src/"
         },
-        "files": ["phpcrawler/src/functions.php"]
+        "files": ["src/functions.php"]
     }
 }

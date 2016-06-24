@@ -1,6 +1,6 @@
 <?php
 
-include '../vendor/autoload.php';
+include './vendor/autoload.php';
 
 set_time_limit(0);
 // $base_url = 'http://www.bootcdn.cn/';
@@ -12,7 +12,7 @@ set_time_limit(0);
 // $base_url = 'http://www.golaravel.com/';
 // $base_url = 'http://www.ghostchina.com/';
 // $base_url = 'https://haobtc.com/';
-$base_url = 'http://localhost/phpcrawler/phpcrawler/test/web/one.php';
+$base_url = 'http://localhost/phpcrawler/test/web/one.php';
 // $base_url = 'http://www.baidu.com';
 // $base_url = 'http://weixiao.qq.com/home/index/view/';
 // $base_url = 'http://my.csdn.net/my/mycsdn';
@@ -31,7 +31,7 @@ $base_url = 'http://localhost/phpcrawler/phpcrawler/test/web/one.php';
 // $cookies = [
 //     'favor' => 'sweet',
 // ];
-$cookies = true;
+// $cookies = true;
 $config = [
     'dir' => '/Applications/MAMP/htdocs/web/',
     'log_level' => 2,
