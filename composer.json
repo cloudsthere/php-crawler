@@ -1,5 +1,6 @@
 {
     "name": "cloudsthere/phpcrawler",
+	"license":"MIT",
     "authors": [
         {
             "name": "liang",
