@@ -4,93 +4,82 @@ namespace phpcrawler;
 
 class Crawler
 {
-    const LOG_ON = false;
-    private $cookie = '';
-    private $base_url = '';
-    // 下载目录
-    private $dir = './web/';
-    private $clear_dir = true;
-    private $loop = null;
-
-    function __construct($base_url){
-        $base_info = parse_url($base_url);
-
-        if(empty($base_info['path']))
-            $base_url .= '/';
-
+    private $base_url;
+    private $config = [
+        'clear_dir' => true,
+        'dir' => './web/',
+        'cookie' => false,
+        'parse_ignore_ext' => ['js', 'jpeg', 'jpg', 'gif', 'png'],
+        'log_level' => 1,
+    ];
+    function __construct($base_url, $config){
         $this->base_url = $base_url;
+        $this->config = array_merge($this->config, $config);
+        Logger::level($this->config['log_level']);
     }
 
-    public function crawl(){
-        $urler = new urler($this->base_url);
-        $html_parser = new HtmlParser;
-        $downloader = new Downloader($this->dir, $this->base_url, $this->clear_dir);
-        if(!empty($this->cookie))
-            $downloader->setCookie($this->cookie);
-
-        $loop = 0;
-        while($current_url = $urler->shift()){
-                $loop++;
-                dump($current_url);
-
-                $html = $downloader->download($current_url);
-                // echo $html;
-                // exit;
-                // if($loop > 1)
-                //     exit;
-                $ignore_ext = ['js'];
-                if(in_array(pathinfo($current_url)['extension'], $ignore_ext))
-                    continue;
-                $new_urls = $html_parser->parse($html);
-                // dump($new_urls);exit;
-                // 输入原始url
-                $urler->collect($new_urls, $current_url);
-
+    public function crawl($loop = true){
+        if($this->config['clear_dir']){
+            if(file_exists($this->config['dir'])){
+                $res = @deldir($this->config['dir']);
+                if(!$res)
+                    throw new \Exception('clear directory:"'.$this->config['dir'].'" failed');
+            }
+        }
+        if(!file_exists($this->config['dir'])){
+            $res = @mkdir($this->config['dir'], 0755);
+            if(!$res)
+                throw new \Exception('create directory:"'.$this->config['dir'].'" failed');
         }
 
-        // $base_info = parse_url($this->base_url);
-        // $statics_base_url = $base_info['scheme'].'://'.$base_info['host'].'/';
-        // $downloader->setBaseUrl($statics_base_url);
 
-        // $statics = HtmlParser::$statics;
-        // $stack = [];
+        TaskFactory::init($this->base_url, $this->config);
+        $seed = TaskFactory::create($this->base_url);
+        // dump($seed);
+        // TaskQueue::$instance = null;
+        // TaskQueue::$queue = [];
+        // TaskQueue::$garbage = [];
+        $queue = TaskQueue::getInstance();
+        $queue->push($seed);
+        // dump(count(TaskQueue::$queue));
+        // $url = '/Public/js/jquery.js?v=56789&a=fdsa';
 
-        // $urler->format($statics);
-        // // dump($statics);
-        // foreach($statics as $url){
-        //     $url_info = parse_url($url);
-        //     if(!in_array($url, $stack) && $url_info['host'] == $base_info['host']){
-        //         $downloader->download($url);
-        //         array_push($stack, $url);
-        //     }
-        // }
-    }
+        // $jquery = TaskFactory::create($url, $seed);
+        // $jquery->download();
+        // exit;
 
-    function setCookie($cookie = ''){
-        $this->cookie = $cookie;
-    }
+        // echo 'crawl';
+        $loop_count = 0;
+        while($task = $queue->shift()){
 
-    function setDir($dir = ''){
-        $this->dir = $dir;
-    }
+            Logger::info('开始任务: '.$task['path']);
+            $task->download();
+            // break;
 
-    public function clearDir($clear_dir){
-        $this->clear_dir = $clear_dir;
-    }
+            if((gettype($loop) == 'boolean' && !$loop) 
+                || (is_numeric($loop) && $loop < $loop_count++) 
+                || (in_array($task['ext'], $this->config['parse_ignore_ext'])))
+                continue;
 
-    public static function log($msg){
-        if(self::LOG_ON){
-            echo "<pre>";
-            echo $msg."\r\n";
+            // continue;
+
+            $urls = $task->parse();
+            // echo '<pre>';
+            // var_export($urls);exit;
+          
+            // $urls = [
+            //     '/home/index/material/',
+            // ];
+
+            // dump($urls);
+            foreach($urls as $url){
+                $new = TaskFactory::create($url, $task);
+                // dump($new['path']);
+                if($new)
+                    $queue->push($new);
+            }
+
         }
     }
+
 }
-
-
-function crawler_test(){
-    $url = 'http://abc.com/';
-    $crawler = new Crawler($url);
-    $crawler->crawl();
-}
-
-// crawler_test();

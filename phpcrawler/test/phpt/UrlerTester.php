@@ -2,27 +2,30 @@
 
 include 'bootstrap.php';
 
-use phpcrawler\Urler;
+
 class UrlerTester extends PHPUnit_Framework_TestCase
 {
     private $urler;
     function __construct(){
         $base_url = 'http://www.123.com';
-        $this->urler = new Urler($base_url);
     }
 
     function testCreateAbsolutePath()
     {
-        $referer = 'http://sjal.com/home/center';
+        $referer = 'http://sjal.com/home/center/user';
         $map = [
-            './a/b' => '/home/a/b',
-            './a/b/../c' => '/home/c',
-            '../../a/b/c' => false,
+            './a/b' => '/home/center/a/b',
+            './a/b/../c' => '/home/center/a/c',
+            '../../../a/b/c' => false,
+            'a' => '/home/center/a',
+            '../a/b' => '/home/a/b',
+            '../../a/b' => '/a/b',
+            '/' => '/',
         ];
         foreach($map as $input => $expect){
-            $actual = Urler::createAbsolutePath($input, $referer);
+            $actual = phpcrawler\createAbsolutePath($input, $referer);
             $res = ($actual == $expect);
-            $this->assertTrue($res, 'input:'.$input.' actual:'.(int)$actual.' expect:'.$expect);
+            $this->assertTrue($res, 'input:'.$input.' actual:'.$actual.' expect:'.$expect);
         }
     }
 }

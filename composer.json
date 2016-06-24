@@ -9,12 +9,12 @@
     "require": {
         "guzzlehttp/guzzle": "^6.2",
         "electrolinux/phpquery": "^0.9.6",
-        "czproject/path-helper": "^4.0",
         "phpunit/phpunit": "^5.4"
     },
     "autoload":{
         "psr-4":{
             "phpcrawler\\":"phpcrawler/src/"
-        }
+        },
+        "files": ["phpcrawler/src/functions.php"]
     }
 }

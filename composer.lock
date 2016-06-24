@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f59e8f5258d004e352ad49bc85a6741c",
-    "content-hash": "93357e0698b20ca914e0041c079ebce1",
+    "hash": "d608a0c98fa19601891d13962915061b",
+    "content-hash": "6ddc888d2173a867a267322a5a29587e",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -184,45 +184,6 @@
                 "validator"
             ],
             "time": "2016-05-04 12:27:30"
-        },
-        {
-            "name": "czproject/path-helper",
-            "version": "v4.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/czproject/path-helper.git",
-                "reference": "0d794e71f069080e82cfcf5356c3b00e44f352bd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/czproject/path-helper/0d794e71f069080e82cfcf5356c3b00e44f352bd.zip",
-                "reference": "0d794e71f069080e82cfcf5356c3b00e44f352bd",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "nette/tester": "~1.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/PathHelper.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Jan Pecha",
-                    "homepage": "http://janpecha.iunas.cz/"
-                }
-            ],
-            "description": "Helper class for creating relative paths, absolutizing, etc.",
-            "time": "2015-12-23 09:48:36"
         },
         {
             "name": "doctrine/instantiator",
