@@ -1,6 +1,7 @@
 ### PHP网页爬虫
 
 ##### 实现目标：抓取后即可正常显示网页
+##### 安装： `$ composer require cloudsthere/phpcrawler`
 
 ##### 使用方法：
 ```
