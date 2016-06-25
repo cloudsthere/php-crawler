@@ -3,8 +3,7 @@
 include './vendor/autoload.php';
 
 set_time_limit(0);
-// $base_url = 'http://target/url';
-$base_url = 'http://localhost/phpcrawler/test/web/receiver.php';
+$base_url = 'http://target/url';
 
 $cookies = true; // 默认
 // $cookies = 'key=abc; key1=123';
@@ -14,12 +13,14 @@ $cookies = true; // 默认
 // ];
 
 $config = [
+    // 保存文件目录
     'dir' => '/Applications/MAMP/htdocs/web/',
     'log_level' => 2,
     // 若值为false, 表示不使用cookie
     // 若值为true, 表示使用cookie，并且cookie会随服务器操作而改变
     // 若指定cookie值(数组或字符串), 则cookie始终为设定值，不受服务器影响
     'cookies' => $cookies,
+    // http请求头，一般不需要设置
     'headers' => [
         'foo' => 'bar',
         'User-Agent' => $_SERVER['HTTP_USER_AGENT'],    
