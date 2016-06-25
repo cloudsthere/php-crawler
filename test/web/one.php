@@ -4,12 +4,10 @@ session_start();
 
 echo "one";
 
-$_SESSION['test'] = 1;
+if($_POST['hello'] == 'beauty')
+    $_SESSION['love'] = 'sex';
 
-echo "<pre>";
-
-var_dump($_SESSION);
-
+var_dump($_SESSION['love']);
 ?>
 
 <!DOCTYPE html>

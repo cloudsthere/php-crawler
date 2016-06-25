@@ -8,8 +8,15 @@ class TaskFactory
 {
     public static $reference;
     public static $config;
-    public static $downloader;
+    public static $downloader = [
+        'config' => [
+            'debug' => false,
+            'method' => 'get',
+            'headers' => [], 
+        ]
+    ];
     public static $cookieJar;
+    public static $seed;
     
     public static function init($base_url, $config = []){
         self::$reference = new Task($base_url);
@@ -18,8 +25,6 @@ class TaskFactory
         $client = [
                     'base_uri' => self::$reference->urlWithoutQuery(),
                 ];
-
-        self::$downloader['config'] = [];
 
         // cookie
         if(!empty(self::$config['cookies']) && !is_bool(self::$config['cookies'])){
@@ -45,20 +50,34 @@ class TaskFactory
                 $set->setDomain($domain);
                 $jar->setCookie($set);
             }
-            // dump($jar->toArray());exit;
-
             self::$cookieJar = $jar;
+
         }elseif(is_bool(self::$config['cookies'])){
             $client['cookies'] = self::$config['cookies'];
         }
 
         self::$downloader['client'] = new Client($client);
 
+        if(!empty(self::$config['method']))
+            self::$downloader['config']['method'] = strtolower(self::$config['method']);
+        if(!empty(self::$config['form_params']))
+            self::$downloader['config']['form_params'] = self::$config['form_params'];
+        if(!empty(self::$config['multipart']))
+            self::$downloader['config']['multipart'] = self::$config['multipart'];
+
+        self::$downloader['config']['headers'] = self::$config['headers'];
+
+        $seed = self::create($base_url);
+        self::$downloader['config']['method'] = 'get';
+        unset(self::$downloader['config']['multipart']);
+        unset(self::$downloader['config']['form_params']);
+
+        return $seed;
     }
 
     private static function defaultConfig($config){
         $default = [
-            'cookies' => false,
+            'cookies' => true,
         ];
         self::$config = array_merge($default, $config);
         if(strrev(self::$config['dir'])[0] == '/'){
@@ -91,8 +110,9 @@ class TaskFactory
             self::$downloader['config']['cookies'] = clone self::$cookieJar;
 
 
-
         $task->downloader =  self::$downloader;
+        unset(self::$config['downloader']);
+
         foreach(self::$config as $key => $val){
             if(property_exists($task, $key))
                 $task->$key = $val;

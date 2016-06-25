@@ -32,11 +32,37 @@ $base_url = 'http://localhost/phpcrawler/test/web/receiver.php';
 // $cookies = [
 //     'favor' => 'sweet',
 // ];
-// $cookies = true;
+// dump(gettype(fopen('LICENSE', 'r')));exit;
+$cookies = true;
 $config = [
     'dir' => '/Applications/MAMP/htdocs/web/',
     'log_level' => 2,
     'cookies' => $cookies,
+    'headers' => [
+        'foo' => 'bar',
+        'User-Agent' => $_SERVER['HTTP_USER_AGENT'],    
+        
+    ],
+    'multipart' => [
+        [
+            'name'     => 'field_name',
+            'contents' => 'abc'
+        ],
+        [
+            'name'     => 'file_name',
+            'contents' => fopen('LICENSE', 'r')
+        ],
+        [
+            'name'     => 'other_file',
+            'contents' => 'hello',
+            'filename' => 'filename.txt',
+            'headers'  => [
+                'X-Foo' => 'this is an extra header to include'
+            ]
+        ]
+    ],
+    'method' => 'post',
+    
 ];
 
 

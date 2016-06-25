@@ -70,8 +70,8 @@ class Task implements \ArrayAccess, \Iterator
         try {
 
             $url = $this['path']. (empty($this['query']) ? '' : '?'.$this['query']);
-            // dump($this->downloader['config']);
-            $response = $this->downloader['client']->request('GET', $url, $this->downloader['config']);
+            $method = $this->downloader['config']['method'];
+            $response = $this->downloader['client']->$method($url, $this->downloader['config']);
             // dump($response->getHeaders());
             // dump($response->getStatusCode());
             $this->content = $response->getBody()->getContents();

@@ -11,6 +11,7 @@ class Crawler
         'cookie' => false,
         'parse_ignore_ext' => ['js', 'jpeg', 'jpg', 'gif', 'png'],
         'log_level' => 1,
+        'debug' => false,
     ];
     function __construct($base_url, $config){
         $this->base_url = $base_url;
@@ -33,8 +34,7 @@ class Crawler
         }
 
 
-        TaskFactory::init($this->base_url, $this->config);
-        $seed = TaskFactory::create($this->base_url);
+        $seed = TaskFactory::init($this->base_url, $this->config);
         // dump($seed);
         // TaskQueue::$instance = null;
         // TaskQueue::$queue = [];
