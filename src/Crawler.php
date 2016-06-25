@@ -35,20 +35,9 @@ class Crawler
 
 
         $seed = TaskFactory::init($this->base_url, $this->config);
-        // dump($seed);
-        // TaskQueue::$instance = null;
-        // TaskQueue::$queue = [];
-        // TaskQueue::$garbage = [];
         $queue = TaskQueue::getInstance();
         $queue->push($seed);
-        // dump(count(TaskQueue::$queue));
-        // $url = '/Public/js/jquery.js?v=56789&a=fdsa';
 
-        // $jquery = TaskFactory::create($url, $seed);
-        // $jquery->download();
-        // exit;
-
-        // echo 'crawl';
         $loop_count = 0;
         while($task = $queue->shift()){
 
@@ -61,20 +50,10 @@ class Crawler
                 || (in_array($task['ext'], $this->config['parse_ignore_ext'])))
                 continue;
 
-            // continue;
-
             $urls = $task->parse();
-            // echo '<pre>';
-            // var_export($urls);exit;
-          
-            // $urls = [
-            //     '/home/index/material/',
-            // ];
 
-            // dump($urls);
             foreach($urls as $url){
                 $new = TaskFactory::create($url, $task);
-                // dump($new['path']);
                 if($new)
                     $queue->push($new);
             }

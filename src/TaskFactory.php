@@ -134,7 +134,6 @@ class TaskFactory
             }
             // 不同域名
             $url_info = parse_url($url);
-            // dump($url_info);
             if(!empty($url_info['host']) && $url_info['host'] != self::$reference['host']){
 
                 return false;

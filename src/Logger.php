@@ -13,8 +13,6 @@ class Logger
     ];
 
     public static function __callStatic($name, $argv){
-        // var_export($name);
-        // var_export($argv);
         $log_level = self::$log_level[$name];
         if($log_level <= self::$level)
             self::present($argv[0]);

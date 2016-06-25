@@ -68,30 +68,12 @@ class Task implements \ArrayAccess, \Iterator
 
 
         try {
-
             $url = $this['path']. (empty($this['query']) ? '' : '?'.$this['query']);
             $method = $this->downloader['config']['method'];
             $response = $this->downloader['client']->$method($url, $this->downloader['config']);
-            // dump($response->getHeaders());
-            // dump($response->getStatusCode());
+
             $this->content = $response->getBody()->getContents();
-            // dump($this['path']);
-            // exit;
-            // echo "<hr>";
-            dump($this['path']);
-            // dump($this['referer']);
-            // dump($this['origin']);
-            // dump($this->downloader->getConfig('cookies')->toArray());
             $filename = $this->_makePath();
-            // dump($filename);
-            // if($this['path'] == '/css/image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC'){
-            //     dump($this['origin']);
-            //     dump($this['referer']);
-            //     dump($filename);
-            // }
-            // dump($filename);
-            // if(file_exists($filename) && is_dir($filename))
-            //     $filename .= '/index.html';
 
             if($filename){
                 Logger::info('文件创建成功');
@@ -99,12 +81,6 @@ class Task implements \ArrayAccess, \Iterator
             }
 
         } catch (RequestException $e) {
-            // dump($this->urlWithoutQuery());
-            // dump($e->getMessage());
-            // dump($this['origin']);
-            // dump($this['path']);
-            // dump($this['referer']);
-            // dump($this->url);
             Logger::debug('请求url: '.$this->urlWithoutQuery(). ' 失败。 origin: '.$this['origin'].'  referer: '.$this['referer']);
             return false;
         }
@@ -140,7 +116,6 @@ class Task implements \ArrayAccess, \Iterator
     }
 
     public function parse(){
-        // dump($this->content);
         $dom = \phpQuery::newDocument($this->content);
 
         $a = [];
@@ -161,7 +136,6 @@ class Task implements \ArrayAccess, \Iterator
         $urls = [];
         $patern = '/(?<=url\()[^)]*?(?=\))/';
         preg_match_all($patern, $this->content, $match);
-        // var_export($match);
         if(!empty($match[0])){
             array_walk($match[0], function(&$val, $key){
                 $val = trim(preg_replace('/[\'"]/', '', $val));
@@ -175,26 +149,3 @@ class Task implements \ArrayAccess, \Iterator
     
 }
 
-// include '../../vendor/autoload.php';
-// $task = new Task('abc.cm');
-// $task->content = <<<HTML
-
-//       $(document).ready(function(){
-
-//         setTimeout(function(){
-//           var url = $.url();
-//           var top = url.param('top'); 
-          
-//           if(top){
-//             var page = $("body");
-//             $(window).scrollTop(top - 50);
-//           }
-//         }, 1);
-
-//       });
-
-//       setTimeout(function(){
-//         //$("body").css({'ove
-// HTML;
-// $res = $task->parse();
-// var_export($res);
