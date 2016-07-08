@@ -14,7 +14,7 @@ $cookies = true; // 默认
 
 $config = [
     // 保存文件目录
-    'dir' => '/Applications/MAMP/htdocs/web/',
+    'dir' => './web/',
     'log_level' => 2,
     // 若值为false, 表示不使用cookie
     // 若值为true, 表示使用cookie，并且cookie会随服务器操作而改变

@@ -13,7 +13,7 @@ class Crawler
         'log_level' => 1,
         'debug' => false,
     ];
-    function __construct($base_url, $config){
+    function __construct($base_url, $config = []){
         $this->base_url = $base_url;
         $this->config = array_merge($this->config, $config);
         Logger::level($this->config['log_level']);
